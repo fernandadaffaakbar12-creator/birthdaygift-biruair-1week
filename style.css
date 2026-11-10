@@ -46,14 +46,14 @@ body {
 /* EFEK KACA KHUSUS UNTUK JUDUL */
 .glass-title {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.25));
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1.5px solid rgba(255, 255, 255, 0.78);
     border-radius: 20px;
     padding: 10px 30px;
     margin-bottom: 25px;
-    box-shadow: 0 8px 25px rgba(0, 40, 75, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 25px rgba(0, 40, 75, 0.14), inset 0 1px 1px rgba(255, 255, 255, 0.9);
 }
 
 /* =========================================
@@ -211,35 +211,39 @@ body {
 /* Layer 1: Gambar Air Lampiran dengan Undulasi Gelombang & Distorsi Refraksi */
 .water-bg-base {
     position: absolute;
-    top: -6%;
-    left: -6%;
-    width: 112%;
-    height: 112%;
+    top: -4%;
+    left: -4%;
+    width: 108%;
+    height: 108%;
     background-image: url('img/water-bg.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: high-quality;
     transform-origin: 50% 50%;
-    filter: url(#water-displacement) brightness(1.02) contrast(1.06) saturate(1.12);
-    animation: gentleWaterSwell 16s ease-in-out infinite alternate;
+    filter: url(#water-displacement) brightness(1.03) contrast(1.06) saturate(1.1);
+    animation: gentleWaterSwell 18s ease-in-out infinite alternate;
     will-change: transform;
 }
 
 /* Layer 2: Refraksi Caustics Ganda untuk Kedalaman Alami (Menyatu Santai) */
 .water-bg-caustic-layer {
     position: absolute;
-    top: -6%;
-    left: -6%;
-    width: 112%;
-    height: 112%;
+    top: -4%;
+    left: -4%;
+    width: 108%;
+    height: 108%;
     background-image: url('img/water-bg.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    mix-blend-mode: overlay;
-    opacity: 0.58;
-    filter: brightness(1.18) contrast(1.15) hue-rotate(6deg);
-    animation: causticDrift 22s ease-in-out infinite alternate-reverse;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: high-quality;
+    mix-blend-mode: soft-light;
+    opacity: 0.35;
+    filter: brightness(1.12) contrast(1.1) hue-rotate(4deg);
+    animation: causticDrift 24s ease-in-out infinite alternate-reverse;
     will-change: transform, opacity;
 }
 
@@ -441,17 +445,17 @@ body {
 }
 
 .glass-panel {
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(18px) saturate(130%);
-    -webkit-backdrop-filter: blur(18px) saturate(130%);
-    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.46) 0%, rgba(255, 255, 255, 0.26) 100%);
+    backdrop-filter: blur(11px) saturate(140%);
+    -webkit-backdrop-filter: blur(11px) saturate(140%);
+    border: 1.5px solid rgba(255, 255, 255, 0.78);
     border-radius: 24px;
     padding: 40px;
     margin-bottom: 80px;
     max-width: 700px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 16px 40px rgba(0, 45, 80, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    box-shadow: 0 16px 40px rgba(0, 45, 80, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 1px rgba(255, 255, 255, 0.35);
 }
 
 .glass-panel h1,
@@ -459,15 +463,16 @@ body {
     font-size: 2rem;
     margin-bottom: 20px;
     color: #8c1b44;
-    text-shadow: none;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85), 0 0 12px rgba(255, 255, 255, 0.55);
 }
 
 .glass-panel p {
     font-size: 1.1rem;
     line-height: 1.7;
     margin-bottom: 15px;
-    color: #0e293f;
-    text-shadow: none;
+    color: #0b2438;
+    font-weight: 450;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(255, 255, 255, 0.45);
 }
 
 .scroll-hint {
@@ -622,17 +627,17 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.50), rgba(255, 255, 255, 0.30));
+    backdrop-filter: blur(10px) saturate(135%);
+    -webkit-backdrop-filter: blur(10px) saturate(135%);
+    border: 1.5px solid rgba(255, 255, 255, 0.82);
     border-radius: 16px;
     padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 10px 30px rgba(0, 45, 80, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 45, 80, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.85);
     transition: border-color 0.3s, box-shadow 0.3s;
     cursor: pointer;
     backface-visibility: hidden;
@@ -719,6 +724,24 @@ body {
     box-shadow: 0 10px 50px rgba(255, 182, 193, 0.5);
     transform: scale(0.7);
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Desain video diperbesar sesuai rasio aspek asli */
+#modal-video {
+    max-width: 90vw;
+    max-height: 82vh;
+    width: auto;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 50px rgba(255, 182, 193, 0.5);
+    background: #000;
+    transform: scale(0.7);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    outline: none;
+}
+
+#image-modal.show-modal #modal-video {
+    transform: scale(1);
 }
 
 /* Desain dasar iframe (akan diubah rasionya via JS) */
@@ -932,6 +955,168 @@ body {
     cursor: pointer;
     touch-action: none;
     border-radius: inherit;
+}
+
+/* =========================================
+   VIDEO MEMORIES SECTION (2 Video Sejajar)
+========================================= */
+.video-memories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin: 20px auto 0 auto;
+    max-width: 480px;
+    width: 100%;
+    align-items: start;
+}
+
+.video-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.28));
+    backdrop-filter: blur(10px) saturate(135%);
+    -webkit-backdrop-filter: blur(10px) saturate(135%);
+    padding: 10px;
+    border-radius: 18px;
+    border: 1.5px solid rgba(255, 255, 255, 0.82);
+    box-shadow: 0 10px 28px rgba(0, 45, 80, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+    animation: float-photo 4.5s ease-in-out infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.video-card:nth-child(even) {
+    animation-delay: 1.2s;
+    animation-duration: 5.2s;
+}
+
+.video-card:hover {
+    border-color: #ffb6c1;
+    box-shadow: 0 14px 34px rgba(0, 45, 80, 0.3), 0 0 25px rgba(255, 182, 193, 0.75);
+}
+
+.video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0b2238;
+}
+
+.memory-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
+    background: #000;
+}
+
+/* Tombol Play/Pause di Tengah Video */
+.video-center-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: rgba(12, 38, 66, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 4;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    transition: opacity 0.3s ease, transform 0.25s ease, background 0.25s ease;
+}
+
+.video-center-play svg {
+    width: 26px;
+    height: 26px;
+}
+
+.video-center-play:hover {
+    background: rgba(140, 27, 68, 0.85);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Sembunyikan tombol tengah saat video sedang berputar kecuali di-hover */
+.video-card.is-playing .video-center-play {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.85);
+}
+
+.video-card.is-playing .video-frame:hover .video-center-play {
+    opacity: 0.9;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Bar Kontrol Bawah (Mute/Unmute & Expand Full Rasio) */
+.video-controls-bar {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.video-btn {
+    pointer-events: auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.2px solid rgba(255, 255, 255, 0.75);
+    background: rgba(10, 34, 58, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.video-btn svg {
+    width: 19px;
+    height: 19px;
+}
+
+.video-btn:hover {
+    transform: scale(1.12);
+    background: rgba(140, 27, 68, 0.88);
+    border-color: #ffffff;
+}
+
+.video-btn:active {
+    transform: scale(0.95);
+}
+
+.video-mute-btn.is-unmuted {
+    background: linear-gradient(135deg, #ff7eb3, #8c1b44);
+    border-color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 126, 179, 0.65);
+}
+
+.video-section-hint {
+    font-size: 0.82rem;
+    color: #1a3e5c;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 0;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95), 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 /* =========================================
@@ -1216,12 +1401,13 @@ body {
     }
 
     /* --- 2. OPTIMASI FROSTED GLASS & BLUR COMPOSITING DI MOBILE --- */
-    /* Mengganti backdrop-filter blur tinggi (14px-18px) dengan blur ringan (4px-6px) & background solid */
+    /* Liquid glass sedikit transparan agar riak air terlihat di belakangnya */
     .glass-panel {
-        background: rgba(255, 255, 255, 0.90) !important;
-        backdrop-filter: blur(6px) !important;
-        -webkit-backdrop-filter: blur(6px) !important;
-        box-shadow: 0 8px 24px rgba(0, 45, 80, 0.12) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.34) 100%) !important;
+        backdrop-filter: blur(8px) saturate(135%) !important;
+        -webkit-backdrop-filter: blur(8px) saturate(135%) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.78) !important;
+        box-shadow: 0 8px 24px rgba(0, 45, 80, 0.14), inset 0 1px 2px rgba(255, 255, 255, 0.88) !important;
         padding: 25px 20px;
         margin-bottom: 50px;
     }
@@ -1238,17 +1424,18 @@ body {
     }
 
     .glass-title {
-        background: rgba(255, 255, 255, 0.92) !important;
-        backdrop-filter: blur(4px) !important;
-        -webkit-backdrop-filter: blur(4px) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.34)) !important;
+        backdrop-filter: blur(6px) !important;
+        -webkit-backdrop-filter: blur(6px) !important;
         box-shadow: 0 4px 15px rgba(0, 40, 75, 0.12) !important;
     }
 
     .pin-container {
-        background: rgba(255, 255, 255, 0.92) !important;
-        backdrop-filter: blur(6px) !important;
-        -webkit-backdrop-filter: blur(6px) !important;
-        box-shadow: 0 10px 30px rgba(0, 45, 80, 0.15) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.54) 0%, rgba(255, 255, 255, 0.36) 100%) !important;
+        backdrop-filter: blur(8px) saturate(135%) !important;
+        -webkit-backdrop-filter: blur(8px) saturate(135%) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+        box-shadow: 0 10px 30px rgba(0, 45, 80, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9) !important;
     }
 
     .pin-popup-overlay {
@@ -1290,10 +1477,10 @@ body {
     }
 
     .planet-card {
-        background: rgba(255, 255, 255, 0.95) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.45)) !important;
         backdrop-filter: none !important; /* SANGAT KRUSIAL: matikan blur pada 5 kartu 3D yang berputar agar 60 FPS */
         -webkit-backdrop-filter: none !important;
-        box-shadow: 0 6px 18px rgba(0, 45, 80, 0.16) !important;
+        box-shadow: 0 6px 18px rgba(0, 45, 80, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.85) !important;
         backface-visibility: hidden !important;
         -webkit-backface-visibility: hidden !important;
         transform: translateZ(0);
@@ -1374,6 +1561,42 @@ body {
 
     .scratch-card {
         transform: translateZ(0);
+    }
+
+    .video-memories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .video-card {
+        padding: 7px;
+        border-radius: 14px;
+        box-shadow: 0 6px 16px rgba(0, 35, 65, 0.16) !important;
+        transform: translateZ(0);
+    }
+
+    .video-center-play {
+        width: 44px;
+        height: 44px;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(12, 38, 66, 0.8) !important;
+    }
+
+    .video-btn {
+        width: 32px;
+        height: 32px;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(10, 34, 58, 0.85) !important;
+    }
+
+    .video-mute-btn.is-unmuted {
+        background: linear-gradient(135deg, #ff7eb3, #8c1b44) !important;
+    }
+
+    .video-section-hint {
+        font-size: 0.72rem;
     }
 
     .music-popup {
@@ -1490,11 +1713,11 @@ body {
     text-align: center;
     padding: 40px;
     border-radius: 24px;
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(18px) saturate(130%);
-    -webkit-backdrop-filter: blur(18px) saturate(130%);
-    border: 1.5px solid rgba(255, 255, 255, 0.95);
-    box-shadow: 0 16px 40px rgba(0, 45, 80, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.28) 100%);
+    backdrop-filter: blur(11px) saturate(140%);
+    -webkit-backdrop-filter: blur(11px) saturate(140%);
+    border: 1.5px solid rgba(255, 255, 255, 0.82);
+    box-shadow: 0 16px 40px rgba(0, 45, 80, 0.16), inset 0 1px 2px rgba(255, 255, 255, 0.92), inset 0 -1px 1px rgba(255, 255, 255, 0.35);
     transform: scale(0.8);
     transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     width: 90%;
@@ -1510,18 +1733,19 @@ body {
     margin-bottom: 5px;
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
-    text-shadow: none;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
 }
 
 .pin-container p {
-    color: #1a4263;
+    color: #10334f;
     font-size: 0.9rem;
     margin-bottom: 25px;
-    text-shadow: none;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 #pin-input {
-    width: 80%;
+    width: 85%;
     padding: 12px;
     font-size: 1.5rem;
     text-align: center;
@@ -1530,7 +1754,7 @@ body {
     outline: none;
     background: rgba(255, 255, 255, 0.95);
     color: #0b2b48;
-    letter-spacing: 15px;
+    letter-spacing: 10px;
     margin-bottom: 20px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 30, 60, 0.08);

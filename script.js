@@ -521,7 +521,7 @@
         const pinPopupClose = document.getElementById('pin-popup-close');
 
         // DEFAULT PIN: Silakan ubah angka ini jika ingin PIN lain
-        const SECRET_PIN = "2505";
+        const SECRET_PIN = "220722";
 
         let pinAttempt = 0;
         let popupTimeout = null;
@@ -627,7 +627,7 @@
 
         if (pinInput) {
             pinInput.addEventListener('input', function () {
-                if (pinInput.value.length === 4) {
+                if (pinInput.value.length === 6) {
                     // Delay sedikit agar digit terakhir terasa diketik
                     setTimeout(() => {
                         if (pinInput.value === SECRET_PIN) {
@@ -721,6 +721,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const daftarFoto = document.querySelectorAll('.gallery-scroll img, .polaroid, .planet-card');
     const modal = document.getElementById('image-modal');
     const modalImg = document.getElementById('modal-img');
+    const modalVideo = document.getElementById('modal-video');
     const modalIframe = document.getElementById('modal-iframe'); // Panggil elemen iframe
     const modalCaption = document.getElementById('modal-caption');
 
@@ -731,6 +732,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Reset layar setiap kali diklik
                 if (modalCaption) modalCaption.innerText = "";
                 modalImg.style.display = 'block'; // Tampilkan foto sebagai default
+                if (modalVideo) {
+                    modalVideo.pause();
+                    modalVideo.style.display = 'none';
+                    modalVideo.src = "";
+                }
                 modalIframe.style.display = 'none'; // Sembunyikan musik sebagai default
                 modalIframe.src = ""; // Kosongkan lagu sebelumnya
 
@@ -807,16 +813,46 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Fungsi Menutup Layar & Mematikan Lagu
-function tutupModal() {
+// Fungsi Menutup Layar & Mematikan Lagu/Video
+function tutupModal(event) {
+    if (event && event.target && event.target.id === 'modal-video') return;
+
     const modal = document.getElementById('image-modal');
     const modalIframe = document.getElementById('modal-iframe');
+    const modalVideo = document.getElementById('modal-video');
 
     if (modal) {
         modal.classList.remove('show-modal');
         // KUNCI PENTING: Mengosongkan src agar lagu berhenti berputar saat ditutup
         if (modalIframe) {
             modalIframe.src = "";
+        }
+        // Hentikan video modal jika sedang tampil
+        if (modalVideo && modalVideo.style.display !== 'none') {
+            const wasCurrentTime = modalVideo.currentTime;
+            const activeCard = modalVideo._sourceCard;
+            const wasInlinePlaying = modalVideo._wasInlinePlaying;
+            modalVideo.pause();
+            modalVideo.muted = true;
+            modalVideo.src = "";
+            modalVideo.style.display = 'none';
+
+            if (activeCard) {
+                const inlineVid = activeCard.querySelector('.memory-video');
+                if (inlineVid) {
+                    if (!Number.isNaN(wasCurrentTime)) {
+                        inlineVid.currentTime = wasCurrentTime;
+                    }
+                    if (wasInlinePlaying) {
+                        inlineVid.play().catch(() => {});
+                    }
+                }
+                modalVideo._sourceCard = null;
+                modalVideo._wasInlinePlaying = false;
+            }
+            if (typeof window.syncBacksoundWithVideos === 'function') {
+                window.syncBacksoundWithVideos();
+            }
         }
     }
 }
@@ -898,6 +934,13 @@ function jalankanAnimasiScroll() {
                     entry.target.classList.add('is-visible');
                     mulaiKetikanBerurutan(entry.target);
                 }
+                // Jika section memiliki video, putar semua videonya secara bersamaan saat terlihat
+                const videosInSection = entry.target.querySelectorAll('.memory-video');
+                videosInSection.forEach((vid) => {
+                    if (vid.paused && !vid._userManuallyPaused) {
+                        vid.play().catch(() => {});
+                    }
+                });
             }
         });
     }, {
@@ -961,15 +1004,231 @@ function toggleMusic() {
     if (!bgMusic) return;
 
     if (bgMusic.paused) {
+        window._bgMusicPausedByVideo = false;
+        // Jika ada video yang sedang unmuted, otomatis mute videonya agar tidak tabrakan
+        document.querySelectorAll('.memory-video, #modal-video').forEach(v => {
+            if (!v.muted) v.muted = true;
+        });
         bgMusic.play().catch(console.error);
-        iconPlay.style.display = 'none';
-        iconPause.style.display = 'block';
+        if (iconPlay) iconPlay.style.display = 'none';
+        if (iconPause) iconPause.style.display = 'block';
     } else {
+        window._bgMusicPausedByVideo = false;
         bgMusic.pause();
-        iconPlay.style.display = 'block';
-        iconPause.style.display = 'none';
+        if (iconPlay) iconPlay.style.display = 'block';
+        if (iconPause) iconPause.style.display = 'none';
     }
 }
+
+// ==========================================
+// 4B. FUNGSI VIDEO MEMORIES (PLAY, UNMUTE AUTO-PAUSE BACKSOUND, EXPAND RASIO ASLI)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const videoCards = document.querySelectorAll('.video-card');
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalVideo = document.getElementById('modal-video');
+    const modalIframe = document.getElementById('modal-iframe');
+    const modalCaption = document.getElementById('modal-caption');
+    const bgMusic = document.getElementById('bg-music');
+    const iconPlay = document.getElementById('icon-play');
+    const iconPause = document.getElementById('icon-pause');
+
+    window._bgMusicPausedByVideo = false;
+
+    function updateMusicIcons(isPlaying) {
+        if (iconPlay) iconPlay.style.display = isPlaying ? 'none' : 'block';
+        if (iconPause) iconPause.style.display = isPlaying ? 'block' : 'none';
+    }
+
+    function isAnyVideoPlayingWithSound() {
+        const allVideos = document.querySelectorAll('.memory-video, #modal-video');
+        for (const v of allVideos) {
+            if (!v.paused && !v.ended && !v.muted && v.readyState > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function syncBacksoundWithVideos() {
+        if (!bgMusic) return;
+        const soundActive = isAnyVideoPlayingWithSound();
+
+        if (soundActive) {
+            if (!bgMusic.paused) {
+                window._bgMusicPausedByVideo = true;
+                bgMusic.pause();
+                updateMusicIcons(false);
+            }
+        } else {
+            if (window._bgMusicPausedByVideo) {
+                window._bgMusicPausedByVideo = false;
+                bgMusic.play().then(() => {
+                    updateMusicIcons(true);
+                }).catch(() => {});
+            }
+        }
+    }
+
+    window.syncBacksoundWithVideos = syncBacksoundWithVideos;
+
+    function updateCardUI(card, video) {
+        const iconVPlay = card.querySelector('.icon-v-play');
+        const iconVPause = card.querySelector('.icon-v-pause');
+        const iconVMuted = card.querySelector('.icon-v-muted');
+        const iconVUnmuted = card.querySelector('.icon-v-unmuted');
+        const muteBtn = card.querySelector('.video-mute-btn');
+
+        const isPlaying = !video.paused && !video.ended;
+        card.classList.toggle('is-playing', isPlaying);
+
+        if (iconVPlay && iconVPause) {
+            iconVPlay.style.display = isPlaying ? 'none' : 'block';
+            iconVPause.style.display = isPlaying ? 'block' : 'none';
+        }
+
+        if (iconVMuted && iconVUnmuted) {
+            iconVMuted.style.display = video.muted ? 'block' : 'none';
+            iconVUnmuted.style.display = video.muted ? 'none' : 'block';
+        }
+
+        if (muteBtn) {
+            muteBtn.classList.toggle('is-unmuted', !video.muted);
+        }
+    }
+
+    videoCards.forEach((card) => {
+        const video = card.querySelector('.memory-video');
+        const centerPlayBtn = card.querySelector('.video-center-play');
+        const muteBtn = card.querySelector('.video-mute-btn');
+        const expandBtn = card.querySelector('.video-expand-btn');
+
+        if (!video) return;
+
+        // Pastikan default muted
+        video.muted = true;
+        updateCardUI(card, video);
+
+        // Set rasio aspek asli secara dinamis saat metadata video dimuat
+        video.addEventListener('loadedmetadata', () => {
+            if (video.videoWidth && video.videoHeight) {
+                const frame = card.querySelector('.video-frame');
+                if (frame) {
+                    frame.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+                }
+            }
+        });
+
+        function togglePlayVideo(e) {
+            if (e) e.stopPropagation();
+            if (video.paused || video.ended) {
+                // Kedua video dapat diputar secara bersamaan tanpa menghentikan video lainnya
+                video._userManuallyPaused = false;
+                video.play().catch(console.error);
+            } else {
+                video._userManuallyPaused = true;
+                video.pause();
+            }
+        }
+
+        // Klik pada area video atau tombol play tengah untuk putar/jeda langsung
+        video.addEventListener('click', togglePlayVideo);
+        if (centerPlayBtn) {
+            centerPlayBtn.addEventListener('click', togglePlayVideo);
+        }
+
+        // Klik tombol mute / unmute
+        if (muteBtn) {
+            muteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                video.muted = !video.muted;
+
+                if (!video.muted) {
+                    // Jika video masih ter-pause saat di-unmute, langsung putar agar suaranya terdengar
+                    if (video.paused) {
+                        video.play().catch(console.error);
+                    }
+                }
+
+                updateCardUI(card, video);
+                syncBacksoundWithVideos();
+            });
+        }
+
+        // Klik tombol perbesar (expand sesuai rasio aspek asli video)
+        if (expandBtn) {
+            expandBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!modal || !modalVideo) return;
+
+                const wasMuted = video.muted;
+                const currentTime = video.currentTime;
+                const wasPlaying = !video.paused && !video.ended;
+                video.pause();
+
+                // Reset elemen lain pada modal
+                if (modalCaption) modalCaption.innerText = "";
+                if (modalImg) modalImg.style.display = 'none';
+                if (modalIframe) {
+                    modalIframe.style.display = 'none';
+                    modalIframe.src = "";
+                }
+
+                // Tampilkan modal video dengan rasio aspek asli
+                modalVideo.style.display = 'block';
+                if (video.videoWidth && video.videoHeight) {
+                    modalVideo.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+                } else {
+                    modalVideo.style.aspectRatio = 'auto';
+                }
+
+                modalVideo._sourceCard = card;
+                modalVideo._wasInlinePlaying = wasPlaying;
+                modalVideo.src = video.currentSrc || video.getAttribute('src');
+                modalVideo.currentTime = currentTime || 0;
+                modalVideo.muted = wasMuted;
+
+                modal.classList.add('show-modal');
+                modalVideo.play().then(() => {
+                    syncBacksoundWithVideos();
+                }).catch(console.error);
+            });
+        }
+
+        video.addEventListener('play', () => {
+            updateCardUI(card, video);
+            syncBacksoundWithVideos();
+        });
+
+        video.addEventListener('pause', () => {
+            updateCardUI(card, video);
+            syncBacksoundWithVideos();
+        });
+
+        video.addEventListener('volumechange', () => {
+            updateCardUI(card, video);
+            syncBacksoundWithVideos();
+        });
+
+        video.addEventListener('ended', () => {
+            updateCardUI(card, video);
+            syncBacksoundWithVideos();
+        });
+    });
+
+    if (modalVideo) {
+        modalVideo.addEventListener('loadedmetadata', () => {
+            if (modalVideo.videoWidth && modalVideo.videoHeight) {
+                modalVideo.style.aspectRatio = `${modalVideo.videoWidth} / ${modalVideo.videoHeight}`;
+            }
+        });
+        modalVideo.addEventListener('play', syncBacksoundWithVideos);
+        modalVideo.addEventListener('pause', syncBacksoundWithVideos);
+        modalVideo.addEventListener('volumechange', syncBacksoundWithVideos);
+        modalVideo.addEventListener('ended', syncBacksoundWithVideos);
+    }
+});
 
 // ==========================================
 // 5. FUNGSI MENYEMBUNYIKAN POP-UP MUSIK SAAT SCROLL
