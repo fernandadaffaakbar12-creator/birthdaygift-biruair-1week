@@ -521,7 +521,7 @@
         const pinPopupClose = document.getElementById('pin-popup-close');
 
         // DEFAULT PIN: Silakan ubah angka ini jika ingin PIN lain
-        const SECRET_PIN = "2512";
+        const SECRET_PIN = "050723";
 
         let pinAttempt = 0;
         let popupTimeout = null;
@@ -627,7 +627,7 @@
 
         if (pinInput) {
             pinInput.addEventListener('input', function () {
-                if (pinInput.value.length === 4) {
+                if (pinInput.value.length === SECRET_PIN.length) {
                     // Delay sedikit agar digit terakhir terasa diketik
                     setTimeout(() => {
                         if (pinInput.value === SECRET_PIN) {
@@ -1384,13 +1384,14 @@ function tutupHalamanLilin() {
         }
 
         if (progressBar) progressBar.classList.remove('show-bar');
-        if (progressFill) progressFill.style.width = '0%';
+        if (progressFill) progressFill.style.transform = 'scaleX(0)';
         if (cakeContainer) cakeContainer.classList.remove('holding');
 
         // Reset api lilin
         flames.forEach(flame => {
             flame.classList.remove('dimming', 'extinguished');
-            flame.style.animationDuration = '';
+            flame.style.removeProperty('--flicker-speed');
+            flame.style.removeProperty('--flicker-inner-speed');
         });
 
         // Hapus sparkle elements
@@ -1517,8 +1518,8 @@ function updateProgress() {
     const progressFill = document.getElementById('hold-progress-fill');
     if (!progressFill) return;
 
-    const percent = Math.min((holdTime / STAGE_2_DURATION) * 100, 100);
-    progressFill.style.width = percent + '%';
+    const percent = Math.min(holdTime / STAGE_2_DURATION, 1);
+    progressFill.style.transform = 'scaleX(' + percent + ')';
 }
 
 function cekTransisiTahap() {
@@ -1546,8 +1547,10 @@ function tampilkanTahap1() {
     }
 
     // Api bergoyang lebih kencang tapi belum mati
+    // (animasi ada di ::before & .flame-inner, jadi kecepatannya diatur lewat CSS variable)
     flames.forEach(flame => {
-        flame.style.animationDuration = '0.15s';
+        flame.style.setProperty('--flicker-speed', '0.15s');
+        flame.style.setProperty('--flicker-inner-speed', '0.12s');
     });
 }
 

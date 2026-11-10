@@ -1822,9 +1822,8 @@ body {
     width: 100%;
     height: 100%;
     z-index: 99990;
-    background: radial-gradient(ellipse at center bottom, rgba(12, 35, 60, 0.88) 0%, rgba(4, 15, 30, 0.98) 100%);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    /* Background hampir solid, tanpa backdrop-filter (blur fullscreen sangat berat & bikin lag) */
+    background: radial-gradient(ellipse at center bottom, rgba(12, 35, 60, 0.97) 0%, rgba(4, 15, 30, 0.99) 100%);
     opacity: 0;
     transition: opacity 0.8s ease;
     overflow-y: auto;
@@ -1880,6 +1879,7 @@ body {
     align-items: center;
     position: relative;
     margin-top: 40px;
+    will-change: transform; /* efek tekan (scale) tidak memicu repaint teks lilin yang berat */
 }
 
 .candles-row {
@@ -1979,8 +1979,10 @@ body {
 
 
 
-/* Efek glow di sekitar lilin angka */
-.number-candle {
+/* Efek glow di sekitar lilin angka
+   (dipasang di badan angka saja, BUKAN di .number-candle, karena .number-candle
+   membungkus api yang terus beranimasi -> filter harus dirender ulang tiap frame = lag) */
+.candle-number-body {
     filter: drop-shadow(0 0 12px rgba(235, 200, 150, 0.35));
 }
 
@@ -2025,8 +2027,9 @@ body {
     height: 28px;
     background: radial-gradient(ellipse at bottom, #ffd700, #ff8c00 40%, #ff4500 70%, transparent 100%);
     border-radius: 50% 50% 30% 30%;
-    animation: flicker 0.3s ease-in-out infinite alternate;
+    animation: flicker var(--flicker-speed, 0.3s) ease-in-out infinite alternate;
     box-shadow: 0 0 12px 4px rgba(255, 165, 0, 0.5), 0 0 30px 8px rgba(255, 100, 0, 0.2);
+    will-change: transform;
 }
 
 .candle-flame .flame-inner {
@@ -2038,8 +2041,9 @@ body {
     height: 14px;
     background: radial-gradient(ellipse at bottom, #ffffee, #ffec8b 60%, transparent 100%);
     border-radius: 50% 50% 30% 30%;
-    animation: flickerInner 0.25s ease-in-out infinite alternate;
+    animation: flickerInner var(--flicker-inner-speed, 0.25s) ease-in-out infinite alternate;
     z-index: 1;
+    will-change: transform;
 }
 
 /* Delay berbeda untuk setiap api lilin */
@@ -2049,7 +2053,8 @@ body {
 
 /* State: api redup */
 .candle-flame.dimming {
-    filter: brightness(0.5);
+    /* Pakai opacity, bukan filter: brightness() yang berat pada elemen beranimasi */
+    opacity: 0.55;
     transform: scale(0.7);
 }
 
@@ -2216,6 +2221,7 @@ body {
 
 .btn-mulai-tiup.hidden-btn {
     opacity: 0;
+    animation: none; /* hentikan animasi box-shadow yang tetap jalan walau tombol tak terlihat */
     pointer-events: none;
     transform: translateY(10px);
     transition: all 0.5s ease;
@@ -2234,6 +2240,8 @@ body {
     z-index: 99995;
     pointer-events: none;
     animation: confettiFall linear forwards;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
 }
 
 .confetti-piece.confetti-swirl {
@@ -2378,9 +2386,7 @@ body {
     font-size: 0.9rem;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 30px;
     cursor: pointer;
@@ -2437,11 +2443,15 @@ body {
 }
 
 .hold-progress-fill {
-    width: 0%;
+    /* Progress pakai transform scaleX (GPU) bukan width (memicu layout tiap 50ms) */
+    width: 100%;
     height: 100%;
     background: linear-gradient(90deg, #ff7eb3, #ff758c, #ffd700);
     border-radius: 3px;
-    transition: width 0.05s linear;
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+    transition: transform 0.05s linear;
     box-shadow: 0 0 8px rgba(255, 126, 179, 0.6);
 }
 
