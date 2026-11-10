@@ -668,25 +668,21 @@ body {
     text-shadow: none;
 }
 
-/* Jarak Orbit lebih rapat namun tidak terlalu mepet */
+/* Jarak Orbit 4 kartu: saling berdekatan namun tidak terlalu rapat (360deg / 4 = 90deg) */
 .item1 {
-    transform: rotateY(0deg) translateZ(290px);
+    transform: rotateY(0deg) translateZ(165px);
 }
 
 .item2 {
-    transform: rotateY(72deg) translateZ(290px);
+    transform: rotateY(90deg) translateZ(165px);
 }
 
 .item3 {
-    transform: rotateY(144deg) translateZ(290px);
+    transform: rotateY(180deg) translateZ(165px);
 }
 
 .item4 {
-    transform: rotateY(216deg) translateZ(290px);
-}
-
-.item5 {
-    transform: rotateY(288deg) translateZ(290px);
+    transform: rotateY(270deg) translateZ(165px);
 }
 
 /* =========================================
@@ -724,24 +720,6 @@ body {
     box-shadow: 0 10px 50px rgba(255, 182, 193, 0.5);
     transform: scale(0.7);
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* Desain video diperbesar sesuai rasio aspek asli */
-#modal-video {
-    max-width: 90vw;
-    max-height: 82vh;
-    width: auto;
-    height: auto;
-    border-radius: 16px;
-    box-shadow: 0 10px 50px rgba(255, 182, 193, 0.5);
-    background: #000;
-    transform: scale(0.7);
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    outline: none;
-}
-
-#image-modal.show-modal #modal-video {
-    transform: scale(1);
 }
 
 /* Desain dasar iframe (akan diubah rasionya via JS) */
@@ -833,7 +811,7 @@ body {
 }
 
 /* =========================================
-   GALERI SCROLL KE SAMPING 9:16 (Slide 4)
+   GALERI SCROLL KE SAMPING 3:4 (Slide 4)
 ========================================= */
 .gallery-scroll {
     display: flex;
@@ -915,8 +893,8 @@ body {
 .scratch-card {
     position: relative;
     flex: 0 0 auto;
-    width: 220px;
-    aspect-ratio: 9 / 16;
+    width: 280px;
+    aspect-ratio: 3 / 4;
     border-radius: 14px;
     border: 2px solid rgba(255, 255, 255, 0.75) !important;
     box-shadow: 0 8px 25px rgba(0, 45, 80, 0.22), 0 0 15px rgba(255, 255, 255, 0.4) !important;
@@ -955,168 +933,6 @@ body {
     cursor: pointer;
     touch-action: none;
     border-radius: inherit;
-}
-
-/* =========================================
-   VIDEO MEMORIES SECTION (2 Video Sejajar)
-========================================= */
-.video-memories-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-    margin: 20px auto 0 auto;
-    max-width: 480px;
-    width: 100%;
-    align-items: start;
-}
-
-.video-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.28));
-    backdrop-filter: blur(10px) saturate(135%);
-    -webkit-backdrop-filter: blur(10px) saturate(135%);
-    padding: 10px;
-    border-radius: 18px;
-    border: 1.5px solid rgba(255, 255, 255, 0.82);
-    box-shadow: 0 10px 28px rgba(0, 45, 80, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.85);
-    animation: float-photo 4.5s ease-in-out infinite;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.video-card:nth-child(even) {
-    animation-delay: 1.2s;
-    animation-duration: 5.2s;
-}
-
-.video-card:hover {
-    border-color: #ffb6c1;
-    box-shadow: 0 14px 34px rgba(0, 45, 80, 0.3), 0 0 25px rgba(255, 182, 193, 0.75);
-}
-
-.video-frame {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 9 / 16;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #0b2238;
-}
-
-.memory-video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    cursor: pointer;
-    background: #000;
-}
-
-/* Tombol Play/Pause di Tengah Video */
-.video-center-play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(255, 255, 255, 0.85);
-    background: rgba(12, 38, 66, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 4;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    transition: opacity 0.3s ease, transform 0.25s ease, background 0.25s ease;
-}
-
-.video-center-play svg {
-    width: 26px;
-    height: 26px;
-}
-
-.video-center-play:hover {
-    background: rgba(140, 27, 68, 0.85);
-    transform: translate(-50%, -50%) scale(1.1);
-}
-
-/* Sembunyikan tombol tengah saat video sedang berputar kecuali di-hover */
-.video-card.is-playing .video-center-play {
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -50%) scale(0.85);
-}
-
-.video-card.is-playing .video-frame:hover .video-center-play {
-    opacity: 0.9;
-    pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-/* Bar Kontrol Bawah (Mute/Unmute & Expand Full Rasio) */
-.video-controls-bar {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.video-btn {
-    pointer-events: auto;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1.2px solid rgba(255, 255, 255, 0.75);
-    background: rgba(10, 34, 58, 0.72);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-}
-
-.video-btn svg {
-    width: 19px;
-    height: 19px;
-}
-
-.video-btn:hover {
-    transform: scale(1.12);
-    background: rgba(140, 27, 68, 0.88);
-    border-color: #ffffff;
-}
-
-.video-btn:active {
-    transform: scale(0.95);
-}
-
-.video-mute-btn.is-unmuted {
-    background: linear-gradient(135deg, #ff7eb3, #8c1b44);
-    border-color: #ffffff;
-    box-shadow: 0 0 12px rgba(255, 126, 179, 0.65);
-}
-
-.video-section-hint {
-    font-size: 0.82rem;
-    color: #1a3e5c;
-    font-weight: 600;
-    text-align: center;
-    margin-top: 16px;
-    margin-bottom: 0;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95), 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 /* =========================================
@@ -1496,25 +1312,21 @@ body {
         font-size: 0.82rem;
     }
 
-    /* Menyesuaikan jarak orbit di HP (lebih rapat namun tidak mepet) */
+    /* Menyesuaikan jarak orbit 4 kartu di HP (saling berdekatan namun tidak terlalu rapat) */
     .item1 {
-        transform: rotateY(0deg) translateZ(168px);
+        transform: rotateY(0deg) translateZ(130px);
     }
 
     .item2 {
-        transform: rotateY(72deg) translateZ(168px);
+        transform: rotateY(90deg) translateZ(130px);
     }
 
     .item3 {
-        transform: rotateY(144deg) translateZ(168px);
+        transform: rotateY(180deg) translateZ(130px);
     }
 
     .item4 {
-        transform: rotateY(216deg) translateZ(168px);
-    }
-
-    .item5 {
-        transform: rotateY(288deg) translateZ(168px);
+        transform: rotateY(270deg) translateZ(130px);
     }
 
     /* --- 4. TATA LETAK & KONTEN DI HP --- */
@@ -1560,43 +1372,11 @@ body {
     }
 
     .scratch-card {
+        width: 78vw;
+        min-width: 255px;
+        max-width: 295px;
+        aspect-ratio: 3 / 4;
         transform: translateZ(0);
-    }
-
-    .video-memories-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    .video-card {
-        padding: 7px;
-        border-radius: 14px;
-        box-shadow: 0 6px 16px rgba(0, 35, 65, 0.16) !important;
-        transform: translateZ(0);
-    }
-
-    .video-center-play {
-        width: 44px;
-        height: 44px;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        background: rgba(12, 38, 66, 0.8) !important;
-    }
-
-    .video-btn {
-        width: 32px;
-        height: 32px;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        background: rgba(10, 34, 58, 0.85) !important;
-    }
-
-    .video-mute-btn.is-unmuted {
-        background: linear-gradient(135deg, #ff7eb3, #8c1b44) !important;
-    }
-
-    .video-section-hint {
-        font-size: 0.72rem;
     }
 
     .music-popup {
@@ -1992,12 +1772,12 @@ body {
     font-family: 'Caveat', cursive;
     font-size: 1.5rem;
     color: #fff;
-    background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff6a88);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #0d2b4e, #163e6c, #091e38);
+    border: 2px solid rgba(255, 255, 255, 0.35);
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.4s ease;
-    box-shadow: 0 4px 20px rgba(255, 126, 179, 0.4), 0 0 30px rgba(255, 126, 179, 0.15);
+    box-shadow: 0 4px 20px rgba(10, 35, 66, 0.55), 0 0 30px rgba(22, 62, 108, 0.25);
     animation: candleBtnPulse 2.5s ease-in-out infinite;
     position: relative;
     overflow: hidden;
@@ -2010,19 +1790,20 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.12), transparent);
     transform: rotate(45deg);
     animation: shimmerBtn 3s ease-in-out infinite;
 }
 
 .btn-tiup-lilin:hover {
+    background: linear-gradient(135deg, #133966, #1d4f87, #0d2b4e);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 30px rgba(255, 126, 179, 0.6), 0 0 50px rgba(255, 126, 179, 0.25);
+    box-shadow: 0 8px 30px rgba(10, 35, 66, 0.75), 0 0 50px rgba(30, 85, 145, 0.4);
 }
 
 @keyframes candleBtnPulse {
-    0%, 100% { box-shadow: 0 4px 20px rgba(255, 126, 179, 0.4), 0 0 30px rgba(255, 126, 179, 0.15); }
-    50% { box-shadow: 0 4px 30px rgba(255, 126, 179, 0.6), 0 0 50px rgba(255, 126, 179, 0.3); }
+    0%, 100% { box-shadow: 0 4px 20px rgba(10, 35, 66, 0.55), 0 0 30px rgba(22, 62, 108, 0.25); }
+    50% { box-shadow: 0 4px 30px rgba(13, 43, 78, 0.8), 0 0 50px rgba(30, 85, 145, 0.45); }
 }
 
 @keyframes shimmerBtn {
@@ -2175,32 +1956,32 @@ body {
     line-height: 1;
     position: relative;
     z-index: 1;
-    /* Wax gradient effect */
+    /* Wax gradient effect (Creamy Vanilla Milk & Caramel) */
     background: linear-gradient(
         180deg,
-        #ffcce0 0%,
-        #ffb6d3 15%,
-        #ff9ecf 30%,
-        #e876a8 55%,
-        #d65d8c 75%,
-        #c44e7d 100%
+        #fffaf2 0%,
+        #f7e6ce 20%,
+        #ebd0ab 45%,
+        #d4ad7d 70%,
+        #b88954 90%,
+        #9c6e3b 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     /* 3D wax-like depth with paint-order trick */
     paint-order: stroke fill;
-    -webkit-text-stroke: 3px rgba(200, 80, 130, 0.5);
-    filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.35))
-            drop-shadow(-1px 0px 1px rgba(255,255,255,0.15))
-            drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+    -webkit-text-stroke: 3px rgba(120, 75, 35, 0.55);
+    filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.4))
+            drop-shadow(-1px 0px 1px rgba(255,255,255,0.2))
+            drop-shadow(0 4px 8px rgba(0,0,0,0.3));
 }
 
 
 
 /* Efek glow di sekitar lilin angka */
 .number-candle {
-    filter: drop-shadow(0 0 12px rgba(255, 160, 200, 0.35));
+    filter: drop-shadow(0 0 12px rgba(235, 200, 150, 0.35));
 }
 
 /* Highlight sinar di atas angka */
@@ -2312,43 +2093,46 @@ body {
     100% { opacity: 0; transform: translateX(-50%) translateY(-30px); }
 }
 
-/* KUE */
+/* KUE COKLAT SUSU (MILK CHOCOLATE CAKE) */
 .cake {
     position: relative;
     width: 200px;
 }
 
+/* Lapisan atas: lelehan dark-milk chocolate ganache mengkilap */
 .cake-top {
     width: 200px;
     height: 18px;
-    background: linear-gradient(180deg, #ffb6c1, #ff8fa3);
+    background: linear-gradient(180deg, #5c341d, #432310);
     border-radius: 8px 8px 0 0;
     position: relative;
     z-index: 1;
-    box-shadow: 0 -2px 8px rgba(255, 182, 193, 0.3);
+    box-shadow: 0 -2px 10px rgba(160, 100, 60, 0.35), inset 0 2px 3px rgba(255, 235, 215, 0.22);
 }
 
+/* Lapisan tengah: krim susu vanilla / milk mousse lembut dengan isian coklat */
 .cake-middle {
     width: 200px;
     height: 55px;
-    background: linear-gradient(180deg, #f8e0e6, #f0c8d0);
+    background: linear-gradient(180deg, #f7ead9 0%, #edd6bc 78%, #63371e 78%, #4e2a16 100%);
     position: relative;
-    border-left: 3px solid rgba(255,255,255,0.1);
-    border-right: 3px solid rgba(0,0,0,0.05);
+    border-left: 3px solid rgba(255, 255, 255, 0.22);
+    border-right: 3px solid rgba(0, 0, 0, 0.12);
 }
 
+/* Lapisan bawah: sponge cake coklat susu (milk chocolate) */
 .cake-bottom {
     width: 200px;
     height: 55px;
-    background: linear-gradient(180deg, #e8a0b0, #d68898);
+    background: linear-gradient(180deg, #8c583a, #6e4127);
     border-radius: 0 0 8px 8px;
     position: relative;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    border-left: 3px solid rgba(255,255,255,0.1);
-    border-right: 3px solid rgba(0,0,0,0.05);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5), inset 0 -3px 6px rgba(45, 20, 8, 0.4);
+    border-left: 3px solid rgba(255, 230, 205, 0.14);
+    border-right: 3px solid rgba(0, 0, 0, 0.18);
 }
 
-/* Frosting drips */
+/* Lelehan coklat (Chocolate ganache drips) */
 .cake-frosting {
     position: absolute;
     top: 15px;
@@ -2363,8 +2147,9 @@ body {
     display: block;
     width: 16px;
     height: 22px;
-    background: linear-gradient(180deg, #ffb6c1, #ff9eaf);
+    background: linear-gradient(180deg, #542e18, #3b1e0e);
     border-radius: 0 0 50% 50%;
+    box-shadow: inset -2px -2px 3px rgba(255, 220, 190, 0.12), 0 2px 4px rgba(0, 0, 0, 0.2);
     animation: frostDrip 3s ease-in-out infinite alternate;
 }
 
@@ -2399,7 +2184,7 @@ body {
     transform: translateX(-50%);
     width: 250px;
     height: 60px;
-    background: radial-gradient(ellipse, rgba(255, 182, 193, 0.15), transparent 70%);
+    background: radial-gradient(ellipse, rgba(210, 155, 105, 0.22), transparent 70%);
     border-radius: 50%;
     z-index: 0;
 }
@@ -2414,18 +2199,19 @@ body {
     font-family: 'Caveat', cursive;
     font-size: 1.4rem;
     color: #fff;
-    background: linear-gradient(135deg, #6c5ce7, #a55eea, #ff6b81);
-    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: linear-gradient(135deg, #0d2b4e, #163e6c, #091e38);
+    border: 2px solid rgba(255, 255, 255, 0.35);
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.4s ease;
-    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+    box-shadow: 0 4px 20px rgba(10, 35, 66, 0.55);
     animation: tiupBtnGlow 2s ease-in-out infinite;
 }
 
 .btn-mulai-tiup:hover {
+    background: linear-gradient(135deg, #133966, #1d4f87, #0d2b4e);
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 8px 30px rgba(108, 92, 231, 0.6);
+    box-shadow: 0 8px 30px rgba(13, 43, 78, 0.8);
 }
 
 .btn-mulai-tiup.hidden-btn {
@@ -2436,8 +2222,8 @@ body {
 }
 
 @keyframes tiupBtnGlow {
-    0%, 100% { box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4); }
-    50% { box-shadow: 0 4px 30px rgba(108, 92, 231, 0.7), 0 0 40px rgba(255, 107, 129, 0.2); }
+    0%, 100% { box-shadow: 0 4px 20px rgba(10, 35, 66, 0.55); }
+    50% { box-shadow: 0 4px 30px rgba(22, 62, 108, 0.85), 0 0 40px rgba(45, 110, 180, 0.35); }
 }
 
 /* =========================================
