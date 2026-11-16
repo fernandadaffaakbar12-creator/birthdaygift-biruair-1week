@@ -670,19 +670,23 @@ body {
 
 /* Jarak Orbit 4 kartu: saling berdekatan namun tidak terlalu rapat (360deg / 4 = 90deg) */
 .item1 {
-    transform: rotateY(0deg) translateZ(165px);
+    transform: rotateY(0deg) translateZ(195px);
 }
 
 .item2 {
-    transform: rotateY(90deg) translateZ(165px);
+    transform: rotateY(72deg) translateZ(195px);
 }
 
 .item3 {
-    transform: rotateY(180deg) translateZ(165px);
+    transform: rotateY(144deg) translateZ(195px);
 }
 
 .item4 {
-    transform: rotateY(270deg) translateZ(165px);
+    transform: rotateY(216deg) translateZ(195px);
+}
+
+.item5 {
+    transform: rotateY(288deg) translateZ(195px);
 }
 
 /* =========================================
@@ -894,7 +898,7 @@ body {
     position: relative;
     flex: 0 0 auto;
     width: 280px;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 9 / 16;
     border-radius: 14px;
     border: 2px solid rgba(255, 255, 255, 0.75) !important;
     box-shadow: 0 8px 25px rgba(0, 45, 80, 0.22), 0 0 15px rgba(255, 255, 255, 0.4) !important;
@@ -1314,19 +1318,23 @@ body {
 
     /* Menyesuaikan jarak orbit 4 kartu di HP (saling berdekatan namun tidak terlalu rapat) */
     .item1 {
-        transform: rotateY(0deg) translateZ(130px);
+        transform: rotateY(0deg) translateZ(155px);
     }
 
     .item2 {
-        transform: rotateY(90deg) translateZ(130px);
+        transform: rotateY(72deg) translateZ(155px);
     }
 
     .item3 {
-        transform: rotateY(180deg) translateZ(130px);
+        transform: rotateY(144deg) translateZ(155px);
     }
 
     .item4 {
-        transform: rotateY(270deg) translateZ(130px);
+        transform: rotateY(216deg) translateZ(155px);
+    }
+
+    .item5 {
+        transform: rotateY(288deg) translateZ(155px);
     }
 
     /* --- 4. TATA LETAK & KONTEN DI HP --- */
@@ -1375,7 +1383,7 @@ body {
         width: 78vw;
         min-width: 255px;
         max-width: 295px;
-        aspect-ratio: 3 / 4;
+        aspect-ratio: 9 / 16;
         transform: translateZ(0);
     }
 

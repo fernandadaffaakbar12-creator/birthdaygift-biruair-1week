@@ -521,7 +521,7 @@
         const pinPopupClose = document.getElementById('pin-popup-close');
 
         // DEFAULT PIN: Silakan ubah angka ini jika ingin PIN lain
-        const SECRET_PIN = "050723";
+        const SECRET_PIN = "1209";
 
         let pinAttempt = 0;
         let popupTimeout = null;
@@ -792,7 +792,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // D. JIKA YANG DIKLIK ADALAH GALERI CINTA
                 else {
                     modalImg.src = this.src;
-                    modalImg.style.aspectRatio = "3 / 4";
+                    modalImg.style.aspectRatio = "9 / 16";
                 }
 
                 modal.classList.add('show-modal');
